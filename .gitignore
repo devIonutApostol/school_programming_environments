@@ -4,6 +4,9 @@ obj
 .idea
 .vscode
 .vs
+.db
+.db-shm
+.db-wal
 **/**/testResults
 **/**/coverage.opencover.xml
 
