@@ -32,43 +32,43 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         
         builder.Entity<Account>()
             .HasMany<Contract>()
-            .WithOne()
+            .WithOne(x => x.Account)
             .HasForeignKey(x => x.AccountId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Publisher>()
             .HasMany<Contract>()
-            .WithOne()
+            .WithOne(x => x.Publisher)
             .HasForeignKey(x => x.PublisherId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Account>()
             .HasMany<Creative>()
-            .WithOne()
+            .WithOne(x => x.Account)
             .HasForeignKey(x => x.AccountId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Account>()
             .HasMany<TargetingRule>()
-            .WithOne()
+            .WithOne(x => x.Account)
             .HasForeignKey(x => x.AccountId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Account>()
             .HasMany<LineItem>()
-            .WithOne()
+            .WithOne(x => x.Account)
             .HasForeignKey(x => x.AccountId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Creative>()
             .HasMany<LineItem>()
-            .WithOne()
-            .HasForeignKey(x => x.Creative)
+            .WithOne(x => x.Creative)
+            .HasForeignKey(x => x.CreativeId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<Contract>()
             .HasMany<LineItem>()
-            .WithOne()
+            .WithOne(x => x.Contract)
             .HasForeignKey(x => x.ContractId)
             .OnDelete(DeleteBehavior.Cascade);
 
