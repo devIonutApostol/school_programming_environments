@@ -24,4 +24,57 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         : base(options, operationalStoreOptions)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        
+        
+        builder.Entity<Account>()
+            .HasMany<Contract>()
+            .WithOne()
+            .HasForeignKey(x => x.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Publisher>()
+            .HasMany<Contract>()
+            .WithOne()
+            .HasForeignKey(x => x.PublisherId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Account>()
+            .HasMany<Creative>()
+            .WithOne()
+            .HasForeignKey(x => x.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Account>()
+            .HasMany<TargetingRule>()
+            .WithOne()
+            .HasForeignKey(x => x.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Account>()
+            .HasMany<LineItem>()
+            .WithOne()
+            .HasForeignKey(x => x.AccountId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Creative>()
+            .HasMany<LineItem>()
+            .WithOne()
+            .HasForeignKey(x => x.Creative)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Contract>()
+            .HasMany<LineItem>()
+            .WithOne()
+            .HasForeignKey(x => x.ContractId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<LineItem>()
+            .HasMany<TargetingRule>(x => x.TargetingRules)
+            .WithMany(x => x.LineItems);
+        
+    }
 }

@@ -14,6 +14,8 @@ public class Contract
     
     public Publisher Publisher { get; set; }
     
+    public ICollection<LineItem> LineItems { get; set; }
+    
     [Required, MaxLength(50), MinLength(5)]
     public string Name { get; set; }
     
