@@ -11,12 +11,18 @@ public class LineItem
     
     public Guid AccountId { get; set; }
     
-    public Guid TargetingRuleId { get; set; }
-    
+    public Account Account { get; set; }
+
     public Guid ContractId { get; set; }
+    
+    public Contract Contract { get; set; }
     
     public Guid CreativeId { get; set; }
     
+    public Creative Creative { get; set; }
+    
+    public ICollection<TargetingRule> TargetingRules { get; set; }
+
     public LineItemStatus Status { get; set; }
     
     [Required, Range(0.1, 100)]
