@@ -15,13 +15,13 @@ public class Creative
     
     public CreativeType Type { get; set; }
     
-    [Required, MaxLength(50), MinLength(5)]
-    public Uri SourceUrl { get; set; }
+    [Required, MaxLength(50), MinLength(5), Url]
+    public string SourceUrl { get; set; }
 }
 
 public enum CreativeType
 {
-    RealTimeBidding,
-    ThirdParty,
-    Media
+    RealTimeBidding = 0,
+    ThirdParty = 1,
+    Media = 2
 }

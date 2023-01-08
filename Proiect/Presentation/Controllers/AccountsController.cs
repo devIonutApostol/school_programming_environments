@@ -18,9 +18,9 @@ public class AccountsController : ControllerBase
     }
     
     [HttpGet("{accountId}")]
-    public async Task<Account> Get(Guid accountId)
+    public async Task<Account> Get(Guid id)
     {
-        return await _dbContext.Accounts.FindAsync(accountId);
+        return await _dbContext.Accounts.FindAsync(id);
     }
 
     [HttpGet]
@@ -47,10 +47,10 @@ public class AccountsController : ControllerBase
             );
     }
 
-    [HttpDelete("{accountId}")]
-    public async Task Delete(Guid accountId)
+    [HttpDelete("{id}")]
+    public async Task Delete(Guid id)
     {
-        await _dbContext.Accounts.Where(x => x.Id == accountId)
+        await _dbContext.Accounts.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
     }
     

@@ -4,7 +4,7 @@ import {catchError, merge, of, share, Subject} from "rxjs";
 import {map, mergeMap} from "rxjs/operators";
 
 @Component({
-  selector: 'app-publishers-component',
+  selector: 'app-publishers',
   templateUrl: './publishers.component.html'
 })
 export class PublishersComponent {
@@ -30,7 +30,7 @@ export class PublishersComponent {
 
   create$ = this.createSubject$
       .pipe(
-          mergeMap(project => this.http.post(`${this.baseUrl}api/publishers/create`, project)
+          mergeMap(obj => this.http.post(`${this.baseUrl}api/publishers/create`, obj)
               .pipe(catchError(err => {
                   alert(JSON.stringify(err.error.errors))
                 return of('')
@@ -41,7 +41,7 @@ export class PublishersComponent {
 
   edit$ = this.editSubject$
       .pipe(
-          mergeMap(project => this.http.put(`${this.baseUrl}api/publishers/edit`, project)
+          mergeMap(obj => this.http.put(`${this.baseUrl}api/publishers/edit`, obj)
               .pipe(catchError(err => {
                 alert(JSON.stringify(err.error.errors))
                 return of('')

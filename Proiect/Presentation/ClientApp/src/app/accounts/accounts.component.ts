@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {mergeAll, of, merge, Subject, catchError, share} from "rxjs";
-import {map, mergeMap, tap} from "rxjs/operators"
+import {of, merge, Subject, catchError, share} from "rxjs";
+import {map, mergeMap} from "rxjs/operators"
 
 @Component({
-    selector: 'app-accounts-component',
+    selector: 'app-accounts',
     templateUrl: './accounts.component.html'
 })
 export class AccountsComponent {
@@ -29,7 +29,7 @@ export class AccountsComponent {
     
     create$ = this.createSubject$
         .pipe(
-            mergeMap(project => this.http.post(`${this.baseUrl}api/accounts/create`, project)
+            mergeMap(obj => this.http.post(`${this.baseUrl}api/accounts/create`, obj)
                 .pipe(catchError(err => {
                     alert(JSON.stringify(err.error.errors))
                     return of('')
@@ -40,7 +40,7 @@ export class AccountsComponent {
 
     edit$ = this.editSubject$
         .pipe(
-            mergeMap(project => this.http.put(`${this.baseUrl}api/accounts/edit`, project)
+            mergeMap(obj => this.http.put(`${this.baseUrl}api/accounts/edit`, obj)
                 .pipe(catchError(err => {
                     alert(JSON.stringify(err.error.errors))
                     return of('')
