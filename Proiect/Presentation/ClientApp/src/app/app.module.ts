@@ -11,6 +11,7 @@ import { TargetingRulesComponent } from './targetingrules/targetingrules.compone
 import { PublishersComponent } from './publishers/publishers.component'
 import { AccountsComponent } from './accounts/accounts.component';
 import { ContractsComponent } from "./contracts/contracts.component";
+import { LineItemsComponent } from "./lineitems/lineitems.component";
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
@@ -23,7 +24,8 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
         TargetingRulesComponent,
         PublishersComponent,
         AccountsComponent,
-        ContractsComponent
+        ContractsComponent,
+        LineItemsComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,7 +38,8 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
             { path: 'accounts', component: AccountsComponent, canActivate: [AuthorizeGuard] },
             { path: 'creatives', component: CreativesComponent, canActivate: [AuthorizeGuard] },
             { path: 'contracts', component: ContractsComponent, canActivate: [AuthorizeGuard] },
-            { path: 'targetingrules', component: TargetingRulesComponent, canActivate: [AuthorizeGuard] }
+            { path: 'targetingrules', component: TargetingRulesComponent, canActivate: [AuthorizeGuard] },
+            { path: 'lineitems', component: LineItemsComponent, canActivate: [AuthorizeGuard] }
         ])
     ],
     providers: [

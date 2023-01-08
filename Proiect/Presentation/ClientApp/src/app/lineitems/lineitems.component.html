@@ -1,0 +1,112 @@
+<h1>Line Items</h1>
+<hr>
+
+<ng-container *ngIf="accounts$ | async as accounts">
+    <label class="form-label" for="accountid">Select account</label>
+    <select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+            [ngModel]=""
+            (change)="selectedAccountSubject$.next($event.target.value)">
+        
+        <option *ngFor="let account of accounts" [value]="account.id">
+            {{account.name}}
+        </option>
+    </select>
+    
+    <ng-container *ngIf="createForm$ | async as form">
+        <div class="form-outline mb-4">
+            <label class="form-label" for="name">Name</label>
+            <input [(ngModel)]="form.payload.name" type="text" id="name" name="name"
+                   style="margin-left: 10px; margin-right: 10px"/>
+            <label class="form-label" for="creativeid">Creative</label>
+            <select id="creativeid" name="creativeid" style="margin-right: 10px; margin-left: 10px"
+                    [(ngModel)]="form.payload.creativeId">
+                <option *ngFor="let creative of form.account.creatives" [value]="creative.id">
+                    {{creative.name}}
+                </option>
+            </select>
+
+            <label class="form-label" for="contractId">Contract</label>
+            <select id="contractId" name="contractId" style="margin-right: 10px; margin-left: 10px"
+                    [(ngModel)]="form.payload.contractId">
+                <option *ngFor="let contract of form.account.contracts" [value]="contract.id">
+                    {{contract.name}}
+                </option>
+            </select>
+            <label class="form-label" for="type">Status</label>
+            <select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                    [(ngModel)]="form.payload.status">
+                <option [ngValue]="0">
+                    Active
+                </option>
+                <option [ngValue]="1">
+                    Inactive
+                </option>
+            </select>
+            <label class="form-label" for="cpm">CPM</label>
+            <input [(ngModel)]="form.payload.cpm" type="number" id="cpm" name="cpm"
+                   style="margin-left: 10px; margin-right: 10px"/>
+            <button class="btn btn-primary btn-block" style="margin-left: 10px"
+                    (click)="createSubject$.next(form.payload)">
+                Create
+            </button>
+        </div>
+        <hr>
+        <ng-container *ngIf="lineitems$ | async as lineitems">
+            <table class='table table-striped' aria-labelledby="tableLabel">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Creative</th>
+                    <th>Contract</th>
+                    <th>Status</th>
+                    <th>CPM</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let lineitem of lineitems">
+                    <td>{{ lineitem.id }}</td>
+                    <td><input [(ngModel)]="lineitem.name" type="text" name="name"/></td>
+                    <td><select id="creativeid" name="creativeId" style="margin-right: 10px; margin-left: 10px"
+                                [(ngModel)]="lineitem.creativeId">
+                        <option *ngFor="let creatives of form.account.creatives" [value]="creatives.id">
+                            {{creatives.name}}
+                        </option>
+                    </select></td>
+                    <td>
+                        <select id="contractId" name="contractId" style="margin-right: 10px; margin-left: 10px"
+                                [(ngModel)]="lineitem.contractId">
+                            <option *ngFor="let contract of form.account.contracts" [value]="contract.id">
+                                {{contract.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                                [(ngModel)]="lineitem.status">
+                            <option [ngValue]="0">
+                                Active
+                            </option>
+                            <option [ngValue]="1">
+                                Inactive
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input [(ngModel)]="lineitem.cpm" type="number" id="cpm" name="cpm"
+                               style="margin-left: 10px; margin-right: 10px"/>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="editSubject$.next(contract)">Edit
+                        </button>
+                        <button type="button" class="btn btn-danger" style="margin-left: 10px"
+                                (click)="deleteSubject$.next(contract.id)">Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </ng-container>
+    </ng-container> 
+</ng-container> 

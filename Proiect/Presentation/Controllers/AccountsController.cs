@@ -27,7 +27,9 @@ public class AccountsController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Account>> List()
     {
-        return await _dbContext.Accounts.ToListAsync();
+        return await _dbContext.Accounts.Include(x => x.Contracts)
+            .Include(x => x.Creatives)
+            .Include(x => x.TargetingRules).ToListAsync();
     }
 
     [HttpPost]

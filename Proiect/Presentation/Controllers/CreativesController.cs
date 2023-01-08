@@ -31,16 +31,25 @@ public class CreativesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task Create([FromBody]Creative creative)
+    public async Task<IActionResult> Create([FromBody]Creative creative)
     {
+        await ValidateRelations(creative);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+
         creative.Id = Guid.NewGuid();
         await _dbContext.AddAsync(creative);
         await _dbContext.SaveChangesAsync();
+        return Ok();
     }
     
     [HttpPut]
-    public async Task Edit([FromBody]Creative creative)
+    public async Task<IActionResult> Edit([FromBody]Creative creative)
     {
+        await ValidateRelations(creative);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+        
         await _dbContext.Creatives
             .Where(x => x.Id == creative.Id)
             .ExecuteUpdateAsync(x =>
@@ -49,6 +58,7 @@ public class CreativesController : ControllerBase
                     .SetProperty(p => p.SourceUrl, creative.SourceUrl)
                     .SetProperty(p => p.AccountId, creative.AccountId)
             );
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -56,5 +66,13 @@ public class CreativesController : ControllerBase
     {
         await _dbContext.Creatives.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
+    }
+
+    private async Task ValidateRelations(Creative entity)
+    {
+        if (!await _dbContext.Accounts.AnyAsync(x => x.Id == entity.AccountId))
+        {
+            ModelState.AddModelError("AccountId", "Account does not exists");
+        }
     }
 }

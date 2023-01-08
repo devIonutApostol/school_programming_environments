@@ -29,18 +29,36 @@ public class TargetingRulesController : ControllerBase
     {
         return await _dbContext.TargetingRules.Include(x => x.Account).ToListAsync();
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IEnumerable<TargetingRule>> ListForAccount(Guid accountId)
+    {
+        return await _dbContext.TargetingRules
+            .Include(x => x.Account)
+            .Where(x => x.AccountId == accountId)
+            .ToListAsync();
+    }
 
     [HttpPost]
-    public async Task Create([FromBody]TargetingRule entity)
+    public async Task<IActionResult> Create([FromBody]TargetingRule entity)
     {
+        await ValidateRelations(entity);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+        
         entity.Id = Guid.NewGuid();
         await _dbContext.AddAsync(entity);
         await _dbContext.SaveChangesAsync();
+        return Ok();
     }
     
     [HttpPut]
-    public async Task Edit([FromBody]TargetingRule entity)
+    public async Task<IActionResult> Edit([FromBody]TargetingRule entity)
     {
+        await ValidateRelations(entity);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+        
         await _dbContext.TargetingRules
             .Where(x => x.Id == entity.Id)
             .ExecuteUpdateAsync(x =>
@@ -48,6 +66,8 @@ public class TargetingRulesController : ControllerBase
                     .SetProperty(p => p.Type, entity.Type)
                     .SetProperty(p => p.AccountId, entity.AccountId)
             );
+
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -55,5 +75,13 @@ public class TargetingRulesController : ControllerBase
     {
         await _dbContext.TargetingRules.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
+    }
+    
+    private async Task ValidateRelations(TargetingRule entity)
+    {
+        if (!await _dbContext.Accounts.AnyAsync(x => x.Id == entity.AccountId))
+        {
+            ModelState.AddModelError("AccountId", "Account does not exists");
+        }
     }
 }

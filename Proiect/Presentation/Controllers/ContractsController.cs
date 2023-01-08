@@ -32,18 +32,28 @@ public class ContractsController : ControllerBase
             .Include(x => x.Publisher)
             .ToListAsync();
     }
-
+    
     [HttpPost]
-    public async Task Create([FromBody]Contract entity)
+    public async Task<IActionResult> Create([FromBody]Contract entity)
     {
+        await ValidateRelations(entity);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+        
         entity.Id = Guid.NewGuid();
         await _dbContext.AddAsync(entity);
         await _dbContext.SaveChangesAsync();
+
+        return Ok();
     }
     
     [HttpPut]
-    public async Task Edit([FromBody]Contract entity)
+    public async Task<IActionResult> Edit([FromBody]Contract entity)
     {
+        await ValidateRelations(entity);
+        if (!ModelState.IsValid)
+            return ValidationProblem();
+        
         await _dbContext.Contracts
             .Where(x => x.Id == entity.Id)
             .ExecuteUpdateAsync(x =>
@@ -52,6 +62,8 @@ public class ContractsController : ControllerBase
                     .SetProperty(p => p.ContractValue, entity.ContractValue)
                     .SetProperty(p => p.AccountId, entity.AccountId)
             );
+
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -59,5 +71,18 @@ public class ContractsController : ControllerBase
     {
         await _dbContext.Contracts.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
+    }
+    
+    private async Task ValidateRelations(Contract entity)
+    {
+        if (!await _dbContext.Accounts.AnyAsync(x => x.Id == entity.AccountId))
+        {
+            ModelState.AddModelError("AccountId", "Account does not exists");
+        }
+        
+        if (!await _dbContext.Publishers.AnyAsync(x => x.Id == entity.PublisherId))
+        {
+            ModelState.AddModelError("PublisherId", "Publisher does not exists");
+        }
     }
 }
