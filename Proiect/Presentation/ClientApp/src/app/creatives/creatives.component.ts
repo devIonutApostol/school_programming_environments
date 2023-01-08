@@ -57,9 +57,6 @@ export class CreativesComponent {
     ).pipe(
         mergeMap(_ => this.http.get(`${this.baseUrl}api/creatives/list`))
     )
-
-    accounts$ = this.http.get(`${this.baseUrl}api/accounts/list`).pipe(shareReplay());
-      
     
     createForm$ = merge(
         of(''),

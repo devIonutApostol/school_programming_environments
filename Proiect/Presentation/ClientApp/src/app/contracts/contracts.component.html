@@ -1,2 +1,105 @@
-<h1>contracts</h1>
+<h1>Contracts</h1>
 <hr>
+
+<ng-container *ngIf="createForm$ | async as form">
+    <div *ngIf="form.accounts && form.accounts.length > 0 && form.publishers && form.publishers.length > 0"
+         class="form-outline mb-4">
+        <label class="form-label" for="name">Name</label>
+        <input [(ngModel)]="form.payload.name" type="text" id="name" name="name"
+               style="margin-left: 10px; margin-right: 10px"/>
+        <label class="form-label" for="accountid">Account</label>
+        <select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+                [(ngModel)]="form.payload.accountId">
+            <option *ngFor="let account of form.accounts" [value]="account.id">
+                {{account.name}}
+            </option>
+        </select>
+
+        <label class="form-label" for="publisherId">Publisher</label>
+        <select id="publisherId" name="publisherId" style="margin-right: 10px; margin-left: 10px"
+                [(ngModel)]="form.payload.publisherId">
+            <option *ngFor="let publisher of form.publishers" [value]="publisher.id">
+                {{publisher.name}}
+            </option>
+        </select>
+        <label class="form-label" for="type">Type</label>
+        <select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                [(ngModel)]="form.payload.type">
+            <option [ngValue]="0">
+                Revenue Share
+            </option>
+            <option [ngValue]="1">
+                Fixed CPM
+            </option>
+            <option [ngValue]="2">
+                Viewable CPM
+            </option>
+        </select>
+        <label class="form-label" for="site">Contract Value</label>
+        <input [(ngModel)]="form.payload.contractValue" type="number" id="site" name="sourceUrl"
+               style="margin-left: 10px; margin-right: 10px"/>
+        <button class="btn btn-primary btn-block" style="margin-left: 10px" (click)="createSubject$.next(form.payload)">
+            Create
+        </button>
+    </div>
+    <ng-template #noaccounts>
+        <p>No accounts or publishers</p>
+    </ng-template>
+    <hr>
+    <ng-container *ngIf="contracts$ | async as contracts">
+        <table class='table table-striped' aria-labelledby="tableLabel">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Account</th>
+                <th>Publisher</th>
+                <th>Type</th>
+                <th>Contract Value</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let contract of contracts">
+                <td>{{ contract.id }}</td>
+                <td><input [(ngModel)]="contract.name" type="text" name="name"/></td>
+                <td><select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="contract.accountId">
+                    <option *ngFor="let account of form.accounts" [value]="account.id">
+                        {{account.name}}
+                    </option>
+                </select></td>
+                <td>
+                    <select id="publisherId" name="publisherId" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="contract.publisherId">
+                        <option *ngFor="let publisher of form.publishers" [value]="publisher.id">
+                            {{publisher.name}}
+                        </option>
+                    </select>
+                </td>
+                <td><select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="contract.type">
+                    <option [ngValue]="0">
+                        Revenue Share
+                    </option>
+                    <option [ngValue]="1">
+                        Fixed CPM
+                    </option>
+                    <option [ngValue]="2">
+                        Viewable CPM
+                    </option>
+                </select></td>
+                <td><input [(ngModel)]="contract.contractValue" type="number" id="site" name="sourceUrl"
+                           style="margin-left: 10px; margin-right: 10px"/></td>
+                <td>
+                    <button type="button" class="btn btn-primary" (click)="editSubject$.next(contract)">Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" style="margin-left: 10px"
+                            (click)="deleteSubject$.next(contract.id)">Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</ng-container>

@@ -22,7 +22,7 @@ public class Contract
     [Required]
     public ContractType Type { get; set; }
     
-    [Required]
+    [Required, Range(0.1,100)]
     public decimal ContractValue { get; set; }
 }
 

@@ -33,54 +33,54 @@
             Create
         </button>
     </div>
-</ng-container>
-<ng-template #noaccounts>
-    <p>No accounts</p>
-</ng-template>
-
-<ng-container *ngIf="creatives$ | async as creatives">
-    <table class='table table-striped' aria-labelledby="tableLabel">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Account</th>
-            <th>Type</th>
-            <th>Source Url</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let creative of creatives">
-            <td>{{ creative.id }}</td>
-            <td><input [(ngModel)]="creative.name" type="text" name="name"/></td>
-            <td><select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
-                        [(ngModel)]="creative.accountId">
-                <option *ngFor="let op of accounts" [value]="op.id">
-                    {{op.name}}
-                </option>
-            </select></td>
-            <td><select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
-                        [(ngModel)]="creative.type">
-                <option [ngValue]="0">
-                    Real Time Bidding
-                </option>
-                <option [ngValue]="1">
-                    Third Party
-                </option>
-                <option [ngValue]="2">
-                    Media
-                </option>
-            </select></td>
-            <td><input [(ngModel)]="creative.sourceUrl" type="text" name="sourceUrl"/></td>
-            <td>
-                <button type="button" class="btn btn-primary" (click)="editSubject$.next(creative)">Edit
-                </button>
-                <button type="button" class="btn btn-danger" style="margin-left: 10px"
-                        (click)="deleteSubject$.next(creative.id)">Delete
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <ng-template #noaccounts>
+        <p>No accounts</p>
+    </ng-template>
+    <hr>
+    <ng-container *ngIf="creatives$ | async as creatives">
+        <table class='table table-striped' aria-labelledby="tableLabel">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Source Url</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let creative of creatives">
+                <td>{{ creative.id }}</td>
+                <td><input [(ngModel)]="creative.name" type="text" name="name"/></td>
+                <td><select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="creative.accountId">
+                    <option *ngFor="let op of form.accounts" [value]="op.id">
+                        {{op.name}}
+                    </option>
+                </select></td>
+                <td><select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="creative.type">
+                    <option [ngValue]="0">
+                        Real Time Bidding
+                    </option>
+                    <option [ngValue]="1">
+                        Third Party
+                    </option>
+                    <option [ngValue]="2">
+                        Media
+                    </option>
+                </select></td>
+                <td><input [(ngModel)]="creative.sourceUrl" type="text" name="sourceUrl"/></td>
+                <td>
+                    <button type="button" class="btn btn-primary" (click)="editSubject$.next(creative)">Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" style="margin-left: 10px"
+                            (click)="deleteSubject$.next(creative.id)">Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-container>
 </ng-container>

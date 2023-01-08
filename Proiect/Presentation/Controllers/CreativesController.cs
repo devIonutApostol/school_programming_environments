@@ -56,6 +56,4 @@ public class CreativesController : ControllerBase
         await _dbContext.Creatives.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
     }
-    
-
 }
