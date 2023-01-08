@@ -55,18 +55,17 @@
             <table class='table table-striped' aria-labelledby="tableLabel">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Creative</th>
                     <th>Contract</th>
                     <th>Status</th>
                     <th>CPM</th>
+                    <th>Targeting Rules</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let lineitem of lineitems">
-                    <td>{{ lineitem.id }}</td>
                     <td><input [(ngModel)]="lineitem.name" type="text" name="name"/></td>
                     <td><select id="creativeid" name="creativeId" style="margin-right: 10px; margin-left: 10px"
                                 [(ngModel)]="lineitem.creativeId">
@@ -98,10 +97,18 @@
                                style="margin-left: 10px; margin-right: 10px"/>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="editSubject$.next(contract)">Edit
+             
+                            <div class="form-check form-check-inline" *ngFor="let rule of lineitem.targetingRules" >
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [(ngModel)]="rule.checked" >
+                                <label class="form-check-label" for="inlineCheckbox1">{{rule.name}}</label>
+                            </div>
+              
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="editSubject$.next(lineitem)">Edit
                         </button>
                         <button type="button" class="btn btn-danger" style="margin-left: 10px"
-                                (click)="deleteSubject$.next(contract.id)">Delete
+                                (click)="deleteSubject$.next(lineitem.id)">Delete
                         </button>
                     </td>
                 </tr>
@@ -109,4 +116,4 @@
             </table>
         </ng-container>
     </ng-container> 
-</ng-container> 
+</ng-container>

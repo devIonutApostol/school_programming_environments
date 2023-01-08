@@ -29,7 +29,7 @@ public class LineItemsController : ControllerBase
     public async Task<IEnumerable<LineItem>> List(Guid id)
     {
         return await _dbContext.LineItems
-            .Include(x => x.Account)
+            .Include(x => x.Account).ThenInclude(account => account.TargetingRules)
             .Include(x => x.Contract)
             .Include(x => x.Creative)
             .Include(x => x.TargetingRules)
@@ -69,6 +69,29 @@ public class LineItemsController : ControllerBase
                     .SetProperty(p => p.CreativeId, entity.CreativeId)
                     .SetProperty(p => p.ContractId, entity.ContractId)
             );
+
+
+        var main = await _dbContext.LineItems.Include(x => x.TargetingRules).Where(x => x.Id == entity.Id).FirstAsync();
+        var ids = entity.TargetingRules.Select(x => x.Id).ToList();
+        var rules = await _dbContext.TargetingRules.Where(tg => ids.Contains(tg.Id)).ToListAsync();
+
+        _dbContext.Attach(main);
+        
+        foreach (var rule in main.TargetingRules)
+        {
+            if(rules.All(r => r.Id != rule.Id))
+                main.TargetingRules.Remove(rule);
+        }
+
+        foreach (var rule in rules)
+        {
+            if(main.TargetingRules.All(r => r.Id != rule.Id))
+                main.TargetingRules.Add(rule);
+        }
+        
+        _dbContext.Update(main);
+        
+        await _dbContext.SaveChangesAsync();
 
         return Ok();
     }

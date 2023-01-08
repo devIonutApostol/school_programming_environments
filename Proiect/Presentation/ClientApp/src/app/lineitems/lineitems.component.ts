@@ -42,6 +42,9 @@ export class LineItemsComponent {
 
     create$ = this.createSubject$
         .pipe(
+            tap((obj : any) => {
+                obj.targetingRules = obj.targetingRules.filter((x: any) => x.checked)
+            }),
             mergeMap(obj => this.http.post(`${this.baseUrl}api/lineitems/create`, obj)
                 .pipe(catchError(err => {
                     alert(JSON.stringify(err.error.errors))
@@ -53,6 +56,9 @@ export class LineItemsComponent {
 
     edit$ = this.editSubject$
         .pipe(
+            tap((obj : any) => {
+               obj.targetingRules = obj.targetingRules.filter((x: any) => x.checked)
+            }),
             mergeMap(obj => this.http.put(`${this.baseUrl}api/lineitems/edit`, obj)
                 .pipe(catchError(err => {
                     alert(JSON.stringify(err.error.errors))
@@ -69,7 +75,13 @@ export class LineItemsComponent {
         this.edit$
     ).pipe(
         withLatestFrom(this.selectedAccount$),
-        mergeMap(([_, account]) => this.http.get(`${this.baseUrl}api/lineitems/list/${account}`))
+        mergeMap(([_, account]) => this.http.get(`${this.baseUrl}api/lineitems/list/${account}`)),
+        tap((lineItems: any) => lineItems.forEach((ln:any) => {
+            
+            let old = ln.targetingRules;
+            ln.targetingRules = ln.account.targetingRules 
+            ln.targetingRules.forEach((tg: any) => tg.checked = old.some((e: any) => e.id == tg.id))
+        }))
     )
     
     
