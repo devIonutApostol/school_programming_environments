@@ -10,9 +10,9 @@ namespace Presentation.Controllers;
 [Route("api/[controller]/[action]")]
 public class AccountsController : ControllerBase
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly AppDbContext _dbContext;
 
-    public AccountsController(ApplicationDbContext dbContext)
+    public AccountsController(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -24,14 +24,43 @@ public class AccountsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Account>> List1()
+    public async Task<IEnumerable<Account>> List()
     {
+
+        await Create(new Account
+        {
+            Id = Guid.NewGuid(),
+            Name = "Hello"
+        });
+        await _dbContext.SaveChangesAsync();
+        
         return await _dbContext.Accounts.ToListAsync();
     }
-    
-    [HttpGet]
-    public  IEnumerable<Account> List()
+
+    [HttpPost]
+    public async Task Create([FromBody]Account account)
     {
-        return _dbContext.Accounts.ToList();
+        await _dbContext.AddAsync(account);
+        await _dbContext.SaveChangesAsync();
     }
+    
+    [HttpPut]
+    public async Task Edit([FromBody]Account account)
+    {
+        
+        var entity = await _dbContext.Accounts.FindAsync(account.Id);
+        _dbContext.Entry(entity).CurrentValues.SetValues(account);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    [HttpDelete("{accountId}")]
+    public async Task Delete(Guid accountId)
+    {
+        
+        
+        await _dbContext.Accounts.Where(x => x.Id == accountId)
+            .ExecuteDeleteAsync();
+    }
+    
+
 }

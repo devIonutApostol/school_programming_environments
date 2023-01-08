@@ -4,6 +4,7 @@ namespace Presentation.Models;
 
 public class Account
 {
+    [Key]
     public Guid Id { get; set; }
     
     [Required, MaxLength(50), MinLength(5)]

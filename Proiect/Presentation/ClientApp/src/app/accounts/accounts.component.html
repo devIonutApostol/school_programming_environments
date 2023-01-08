@@ -1,0 +1,21 @@
+<h1 id="tableLabel">Accounts</h1>
+
+<p *ngIf="!accounts?.length"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts.length">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.name }}</td>
+      
+      <td>
+        <button type="button" class="btn btn-primary">Edit</button>
+        <button type="button" class="btn btn-danger" style="margin-left: 10px" (click)="delete(account.id)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
