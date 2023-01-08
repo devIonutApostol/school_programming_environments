@@ -32,6 +32,7 @@ public class AccountsController : ControllerBase
     [HttpPost]
     public async Task Create([FromBody]Account account)
     {
+        account.Id = Guid.NewGuid();
         await _dbContext.AddAsync(account);
         await _dbContext.SaveChangesAsync();
     }
@@ -42,6 +43,7 @@ public class AccountsController : ControllerBase
         
         var entity = await _dbContext.Accounts.FindAsync(account.Id);
         _dbContext.Entry(entity).CurrentValues.SetValues(account);
+        _dbContext.Entry(entity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync();
     }
 

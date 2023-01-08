@@ -1,22 +1,33 @@
 <h1 id="tableLabel">Accounts</h1>
 
 
+<ng-container *ngIf="createForm$ | async as form">
+  <div class="form-outline mb-4">
+    <label class="form-label" for="name">Name</label>
+    <input [(ngModel)]="form.name" type="text" id="name" name="name" style="margin-left: 10px"/>
+    <button class="btn btn-primary btn-block" style="margin-left: 10px" (click)="createSubject$.next(form)">Create</button>
+  </div>
+</ng-container>
+
 <ng-container *ngIf="accounts$ | async as accounts" >
 <table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Name</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let account of accounts">
-      <td>{{ account.name }}</td>
-      
+      <td>{{ account.id }}</td>
+      <td><input [(ngModel)]="account.name" type="text" name="name"/></td>
       <td>
-        <button type="button" class="btn btn-primary">Edit</button>
-        <button type="button" class="btn btn-danger" style="margin-left: 10px" (click)="delete(account.id)">Delete</button></td>
+        <button type="button" class="btn btn-primary" (click)="editSubject$.next(account)">Edit</button>
+        <button type="button" class="btn btn-danger" style="margin-left: 10px" (click)="deleteSubject$.next(account.id)">Delete</button></td>
     </tr>
   </tbody>
 </table>
 </ng-container>
+
+<ng-container *ngIf="delete$ | async"></ng-container>
