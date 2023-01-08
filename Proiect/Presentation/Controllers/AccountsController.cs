@@ -6,10 +6,9 @@ using Presentation.Models;
 
 namespace Presentation.Controllers;
 
-[Authorize]
 [ApiController]
-[Route("[controller]")]
-public class AccountsController : Controller
+[Route("api/[controller]/[action]")]
+public class AccountsController : ControllerBase
 {
     private readonly ApplicationDbContext _dbContext;
 
@@ -18,13 +17,21 @@ public class AccountsController : Controller
         _dbContext = dbContext;
     }
     
+    [HttpGet("{accountId}")]
     public async Task<Account> Get(Guid accountId)
     {
         return await _dbContext.Accounts.FindAsync(accountId);
     }
 
-    public async Task<IEnumerable<Account>> List()
+    [HttpGet]
+    public async Task<IEnumerable<Account>> List1()
     {
         return await _dbContext.Accounts.ToListAsync();
+    }
+    
+    [HttpGet]
+    public  IEnumerable<Account> List()
+    {
+        return _dbContext.Accounts.ToList();
     }
 }
