@@ -11,6 +11,9 @@ public class TargetingRule
     
     public Account Account { get; set; }
     
+    [Required, MaxLength(50), MinLength(5)]
+    public string Name { get; set; }
+    
     public TargetingRuleType Type { get; set; }
     
     [Required, MaxLength(50), MinLength(5)]

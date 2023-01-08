@@ -8,32 +8,29 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ContractsController : ControllerBase
+public class TargetingRulesController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
 
-    public ContractsController(AppDbContext dbContext)
+    public TargetingRulesController(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
     
     [HttpGet("{id}")]
-    public async Task<Contract> Get(Guid id)
+    public async Task<TargetingRule> Get(Guid id)
     {
-        return await _dbContext.Contracts.FindAsync(id);
+        return await _dbContext.TargetingRules.FindAsync(id);
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Contract>> List()
+    public async Task<IEnumerable<TargetingRule>> List()
     {
-        return await _dbContext.Contracts
-            .Include(x => x.Account)
-            .Include(x => x.Publisher)
-            .ToListAsync();
+        return await _dbContext.TargetingRules.Include(x => x.Account).ToListAsync();
     }
 
     [HttpPost]
-    public async Task Create([FromBody]Contract entity)
+    public async Task Create([FromBody]TargetingRule entity)
     {
         entity.Id = Guid.NewGuid();
         await _dbContext.AddAsync(entity);
@@ -41,14 +38,13 @@ public class ContractsController : ControllerBase
     }
     
     [HttpPut]
-    public async Task Edit([FromBody]Contract entity)
+    public async Task Edit([FromBody]TargetingRule entity)
     {
-        await _dbContext.Contracts
+        await _dbContext.TargetingRules
             .Where(x => x.Id == entity.Id)
             .ExecuteUpdateAsync(x =>
                 x.SetProperty(p => p.Name, entity.Name)
                     .SetProperty(p => p.Type, entity.Type)
-                    .SetProperty(p => p.ContractValue, entity.ContractValue)
                     .SetProperty(p => p.AccountId, entity.AccountId)
             );
     }
@@ -56,7 +52,7 @@ public class ContractsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task Delete(Guid id)
     {
-        await _dbContext.Contracts.Where(x => x.Id == id)
+        await _dbContext.TargetingRules.Where(x => x.Id == id)
             .ExecuteDeleteAsync();
     }
 }
