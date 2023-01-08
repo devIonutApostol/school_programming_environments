@@ -26,14 +26,6 @@ public class AccountsController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Account>> List()
     {
-
-        await Create(new Account
-        {
-            Id = Guid.NewGuid(),
-            Name = "Hello"
-        });
-        await _dbContext.SaveChangesAsync();
-        
         return await _dbContext.Accounts.ToListAsync();
     }
 
@@ -56,8 +48,6 @@ public class AccountsController : ControllerBase
     [HttpDelete("{accountId}")]
     public async Task Delete(Guid accountId)
     {
-        
-        
         await _dbContext.Accounts.Where(x => x.Id == accountId)
             .ExecuteDeleteAsync();
     }

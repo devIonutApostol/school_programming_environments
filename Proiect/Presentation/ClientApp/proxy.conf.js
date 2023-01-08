@@ -14,7 +14,7 @@ const PROXY_CONFIG = [
       "/ApplyDatabaseMigrations",
       "/_framework"
    ],
-    target: target,
+    target: "https://localhost:7017",
     secure: false,
     headers: {
       Connection: 'Keep-Alive'
