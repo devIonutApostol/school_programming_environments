@@ -65,12 +65,15 @@ export class CreativesComponent {
         of(''),
         this.create$
     ).pipe(
-        withLatestFrom(this.accounts$),
-        map(([_, accounts]) => ({
-            name: '',
-            accountId : (<Array<any>>accounts)[0].id,
-            type: 0,
-            sourceUrl: '',
+        mergeMap(_ => this.http.get(`${this.baseUrl}api/accounts/list`)),
+        map(accounts => ({
+            payload: {
+                name: '',
+                accountId : (<Array<any>>accounts)[0].id,
+                type: 0,
+                sourceUrl: ''
+            },
+            accounts: accounts
         }))
     )
 }
