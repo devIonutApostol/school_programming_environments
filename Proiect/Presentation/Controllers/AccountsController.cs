@@ -40,11 +40,11 @@ public class AccountsController : ControllerBase
     [HttpPut]
     public async Task Edit([FromBody]Account account)
     {
-        
-        var entity = await _dbContext.Accounts.FindAsync(account.Id);
-        _dbContext.Entry(entity).CurrentValues.SetValues(account);
-        _dbContext.Entry(entity).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.Accounts
+            .Where(x => x.Id == account.Id)
+            .ExecuteUpdateAsync(x =>
+                x.SetProperty(p => p.Name, account.Name)
+            );
     }
 
     [HttpDelete("{accountId}")]

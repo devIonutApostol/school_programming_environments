@@ -7,8 +7,8 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './accounts/accounts.component';
+import { PublishersComponent } from './publishers/publishers.component'
+import { AccountsComponent } from './accounts/accounts.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
@@ -18,8 +18,8 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent
+    PublishersComponent,
+    AccountsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -27,9 +27,9 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'accounts', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: '', component: AccountsComponent, pathMatch: 'full', canActivate: [AuthorizeGuard] },
+      { path: 'publishers', component: PublishersComponent, canActivate: [AuthorizeGuard] },
+      { path: 'accounts', component: AccountsComponent, canActivate: [AuthorizeGuard] },
     ])
   ],
   providers: [

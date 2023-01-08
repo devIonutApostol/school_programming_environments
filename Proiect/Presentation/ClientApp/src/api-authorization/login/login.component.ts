@@ -103,9 +103,7 @@ export class LoginComponent implements OnInit {
     const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
     // If the url is coming from the query string, check that is either
     // a relative url or an absolute url
-    if (fromQuery &&
-      !(fromQuery.startsWith(`${window.location.origin}/`) ||
-        /\/[^\/].*/.test(fromQuery))) {
+    if (fromQuery) {
       // This is an extra check to prevent open redirects.
       throw new Error('Invalid return url. The return url needs to have the same origin as the current page.');
     }

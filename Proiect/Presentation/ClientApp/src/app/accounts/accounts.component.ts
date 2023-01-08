@@ -4,10 +4,10 @@ import {mergeAll, of, merge, Subject, catchError, share} from "rxjs";
 import {map, mergeMap, tap} from "rxjs/operators"
 
 @Component({
-    selector: 'app-accounts',
+    selector: 'app-accounts-component',
     templateUrl: './accounts.component.html'
 })
-export class FetchDataComponent {
+export class AccountsComponent {
     constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     }
     
