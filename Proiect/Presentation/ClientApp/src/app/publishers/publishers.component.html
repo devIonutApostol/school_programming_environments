@@ -4,7 +4,11 @@
 <ng-container *ngIf="createForm$ | async as form">
     <div class="form-outline mb-4">
         <label class="form-label" for="name">Name</label>
-        <input [(ngModel)]="form.name" type="text" id="name" name="name" style="margin-left: 10px"/>
+        <input [(ngModel)]="form.name" type="text" id="name" name="name" style="margin-left: 10px; margin-right: 10px"/>
+        <label class="form-label" for="email">Email</label>
+        <input [(ngModel)]="form.email" type="text" id="email" name="email" style="margin-left: 10px; margin-right: 10px"/>
+        <label class="form-label" for="site">Site</label>
+        <input [(ngModel)]="form.site" type="text" id="site" name="site" style="margin-left: 10px; margin-right: 10px"/>
         <button class="btn btn-primary btn-block" style="margin-left: 10px" (click)="createSubject$.next(form)">Create</button>
     </div>
 </ng-container>
@@ -15,6 +19,8 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Email</th>
+            <th>Site</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -22,6 +28,8 @@
         <tr *ngFor="let publisher of publishers">
             <td>{{ publisher.id }}</td>
             <td><input [(ngModel)]="publisher.name" type="text" name="name"/></td>
+            <td><input [(ngModel)]="publisher.email" type="text" name="email"/></td>
+            <td><input [(ngModel)]="publisher.site" type="text" name="site"/></td>
             <td>
                 <button type="button" class="btn btn-primary" (click)="editSubject$.next(publisher)">Edit</button>
                 <button type="button" class="btn btn-danger" style="margin-left: 10px" (click)="deleteSubject$.next(publisher.id)">Delete</button></td>

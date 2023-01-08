@@ -20,7 +20,7 @@ export class AccountsComponent {
         .pipe(
             mergeMap(id => this.http.delete(`${this.baseUrl}api/accounts/delete/${id}`)
                 .pipe(catchError(err => {
-                    alert(err.error.errors.Name[0])
+                    alert(JSON.stringify(err.error.errors))
                     return of('')
                 }))
             ),
@@ -31,7 +31,7 @@ export class AccountsComponent {
         .pipe(
             mergeMap(project => this.http.post(`${this.baseUrl}api/accounts/create`, project)
                 .pipe(catchError(err => {
-                    alert(err.error.errors.Name[0])
+                    alert(JSON.stringify(err.error.errors))
                     return of('')
                 }))
             ),
@@ -42,7 +42,7 @@ export class AccountsComponent {
         .pipe(
             mergeMap(project => this.http.put(`${this.baseUrl}api/accounts/edit`, project)
                 .pipe(catchError(err => {
-                    alert(err.error.errors.Name[0])
+                    alert(JSON.stringify(err.error.errors))
                     return of('')
                 }))
             ),

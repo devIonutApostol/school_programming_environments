@@ -12,8 +12,8 @@ public class Publisher
     [Required, MaxLength(50), MinLength(5), EmailAddress]
     public string Email { get; set; }
     
-    [Required, MaxLength(50), MinLength(5), EmailAddress]
-    public Uri Site { get; set; }
+    [Required, MaxLength(50), MinLength(5), Url]
+    public string Site { get; set; }
     
     public ICollection<Contract> Contracts { get; set; }
 }

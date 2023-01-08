@@ -21,7 +21,7 @@ export class PublishersComponent {
       .pipe(
           mergeMap(id => this.http.delete(`${this.baseUrl}api/publishers/delete/${id}`)
               .pipe(catchError(err => {
-                alert(err.error.errors.Name[0])
+                  alert(JSON.stringify(err.error.errors))
                 return of('')
               }))
           ),
@@ -32,7 +32,7 @@ export class PublishersComponent {
       .pipe(
           mergeMap(project => this.http.post(`${this.baseUrl}api/publishers/create`, project)
               .pipe(catchError(err => {
-                alert(err.error.errors.Name[0])
+                  alert(JSON.stringify(err.error.errors))
                 return of('')
               }))
           ),
@@ -43,7 +43,7 @@ export class PublishersComponent {
       .pipe(
           mergeMap(project => this.http.put(`${this.baseUrl}api/publishers/edit`, project)
               .pipe(catchError(err => {
-                alert(err.error.errors.Name[0])
+                alert(JSON.stringify(err.error.errors))
                 return of('')
               }))
           ),
@@ -64,7 +64,9 @@ export class PublishersComponent {
       this.create$
   ).pipe(
       map(_ => ({
-        name: ''
+          name: '',
+          email: '',
+          site: ''
       }))
   )
 }
