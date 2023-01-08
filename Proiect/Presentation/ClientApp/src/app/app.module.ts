@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { CreativesComponent } from './creatives/creatives.component';
+import { TargetingRulesComponent } from './targetingrules/targetingrules.component';
 import { PublishersComponent } from './publishers/publishers.component'
 import { AccountsComponent } from './accounts/accounts.component';
 import { ContractsComponent } from "./contracts/contracts.component";
@@ -19,6 +20,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
         AppComponent,
         NavMenuComponent,
         CreativesComponent,
+        TargetingRulesComponent,
         PublishersComponent,
         AccountsComponent,
         ContractsComponent
@@ -34,6 +36,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
             { path: 'accounts', component: AccountsComponent, canActivate: [AuthorizeGuard] },
             { path: 'creatives', component: CreativesComponent, canActivate: [AuthorizeGuard] },
             { path: 'contracts', component: ContractsComponent, canActivate: [AuthorizeGuard] },
+            { path: 'targetingrules', component: TargetingRulesComponent, canActivate: [AuthorizeGuard] }
         ])
     ],
     providers: [

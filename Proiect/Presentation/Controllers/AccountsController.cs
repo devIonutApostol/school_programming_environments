@@ -6,6 +6,7 @@ using Presentation.Models;
 
 namespace Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class AccountsController : ControllerBase

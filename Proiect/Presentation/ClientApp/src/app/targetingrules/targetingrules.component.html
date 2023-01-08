@@ -1,0 +1,92 @@
+<h1 id="tableLabel">Targeting Rules</h1>
+<hr>
+
+<ng-container *ngIf="createForm$ | async as form">
+    <div *ngIf="form.accounts && form.accounts.length > 0" class="form-outline mb-4">
+        <label class="form-label" for="name">Name</label>
+        <input [(ngModel)]="form.payload.name" type="text" id="name" name="name"
+               style="margin-left: 10px; margin-right: 10px"/>
+        <label class="form-label" for="accountid">Account</label>
+        <select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+                [(ngModel)]="form.payload.accountId">
+            <option *ngFor="let op of form.accounts" [value]="op.id">
+                {{op.name}}
+            </option>
+        </select>
+        <label class="form-label" for="type">Type</label>
+        <select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                [(ngModel)]="form.payload.type">
+            <option [ngValue]="0">
+                Country
+            </option>
+            <option [ngValue]="1">
+                Device
+            </option>
+            <option [ngValue]="2">
+                User Agent
+            </option>
+            <option [ngValue]="3">
+                Domain
+            </option>
+        </select>
+        <label class="form-label" for="value">Value</label>
+        <input [(ngModel)]="form.payload.value" type="text" id="value" name="value"
+               style="margin-left: 10px; margin-right: 10px"/>
+        <button class="btn btn-primary btn-block" style="margin-left: 10px" (click)="createSubject$.next(form.payload)">
+            Create
+        </button>
+    </div>
+    <ng-template #noaccounts>
+        <p>No accounts</p>
+    </ng-template>
+    <hr>
+    <ng-container *ngIf="targetingrules$ | async as targetingrules">
+        <table class='table table-striped' aria-labelledby="tableLabel">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Values</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let targetingrule of targetingrules">
+                <td>{{ targetingrule.id }}</td>
+                <td><input [(ngModel)]="targetingrule.name" type="text" name="name"/></td>
+                <td><select id="accountid" name="accountid" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="targetingrule.accountId">
+                    <option *ngFor="let op of form.accounts" [value]="op.id">
+                        {{op.name}}
+                    </option>
+                </select></td>
+                <td><select id="type" name="type" style="margin-right: 10px; margin-left: 10px"
+                            [(ngModel)]="targetingrule.type">
+                    <option [ngValue]="0">
+                        Country
+                    </option>
+                    <option [ngValue]="1">
+                        Device
+                    </option>
+                    <option [ngValue]="2">
+                        User Agent
+                    </option>
+                    <option [ngValue]="3">
+                        Domain
+                    </option>
+                </select></td>
+                <td><input [(ngModel)]="targetingrule.value" type="text" name="value"/></td>
+                <td>
+                    <button type="button" class="btn btn-primary" (click)="editSubject$.next(targetingrule)">Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" style="margin-left: 10px"
+                            (click)="deleteSubject$.next(targetingrule.id)">Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</ng-container>
