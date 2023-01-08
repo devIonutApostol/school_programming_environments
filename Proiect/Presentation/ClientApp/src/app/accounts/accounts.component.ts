@@ -1,27 +1,37 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {mergeAll, of, merge, Subject} from "rxjs";
+import { mergeMap } from "rxjs/operators"
 
 @Component({
-  selector: 'app-accounts',
-  templateUrl: './accounts.component.html'
+    selector: 'app-accounts',
+    templateUrl: './accounts.component.html'
 })
-export class FetchDataComponent implements OnInit{
-  public accounts: any = [];
-  
+export class FetchDataComponent {
+    constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+    }
+    
+    deleteSubject$ = new Subject()
+    
+    
+    delete$ = this.deleteSubject$
+        .pipe(
+            mergeMap(id => this.http.delete(this.baseUrl + `api/accounts/delete/${id}`))
+        );
+    
+    accounts$ = merge(
+        of(''),
+        this.delete$
+    ).pipe(
+        mergeMap(_ => this.http.get(this.baseUrl + 'api/accounts/list'))
+    )
 
-  constructor(private http: HttpClient, @Inject('BASE_URL')private baseUrl: string) {
-  }
-  
-  delete(id: any) {
-    this.http.delete(this.baseUrl + `api/accounts/delete/${id}`).subscribe(result => {
-      this.accounts = result;
-    }, error => console.error(error));
-  }
+    
+    delete(id: any) {
+        this.http.delete(this.baseUrl + `api/accounts/delete/${id}`).subscribe(result => {
+        }, error => console.error(error));
+    }
+    
 
-  ngOnInit(): void {
-    this.http.get(this.baseUrl + 'api/accounts/list').subscribe(result => {
-      this.accounts = result;
-    }, error => console.error(error));
-  }
 }
 

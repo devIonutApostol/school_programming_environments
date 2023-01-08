@@ -1,8 +1,8 @@
 <h1 id="tableLabel">Accounts</h1>
 
-<p *ngIf="!accounts?.length"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts.length">
+<ng-container *ngIf="accounts$ | async as accounts" >
+<table class='table table-striped' aria-labelledby="tableLabel">
   <thead>
     <tr>
       <th>Name</th>
@@ -19,3 +19,4 @@
     </tr>
   </tbody>
 </table>
+</ng-container>
